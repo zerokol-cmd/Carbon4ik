@@ -6,6 +6,7 @@ import <array>;
 import Luau;
 import LuaEnv;
 import StringUtils;
+import InputFile;
 
 int carbon_readfile(lua_State* L);
 int carbon_loadfile(lua_State* L);
@@ -73,11 +74,11 @@ int carbon_readfile(lua_State* L)
 	if (!std::filesystem::exists(path))
 		luaL_errorL(L, "file does not exist");
 
-	std::ifstream stream(path, std::ios_base::binary);
-	std::string result((std::istreambuf_iterator<char>(stream)),
-		std::istreambuf_iterator<char>());
+	InputFile file(path);
+	file.load();
+	file.getSource();
 
-	lua_pushlstring(L, result.c_str(), result.size());
+	lua_pushlstring(L, file.getSource().c_str(), file.getSize());
 
 	return 1;
 }
@@ -89,11 +90,11 @@ int carbon_loadfile(lua_State* L)
 	if (!std::filesystem::exists(path))
 		luaL_errorL(L, "file does not exist");
 
-	std::ifstream stream(path, std::ios_base::binary);
-	std::string result((std::istreambuf_iterator<char>(stream)),
-		std::istreambuf_iterator<char>());
+	InputFile file(path);
+	file.load();
+	file.getSource();
 
-	if (luaApiRuntimeState.compile(L, result.c_str(), result.c_str()))
+	if (luaApiRuntimeState.compile(L, file.getSource().c_str(), file.getName().c_str()))
 		return 1;
 
 	lua_pushnil(L);

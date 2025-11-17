@@ -55,6 +55,7 @@
     <ClCompile Include="Luau\Riblix.ixx" />
     <ClCompile Include="..\Common\RiblixStructureOffsets.ixx" />
     <ClCompile Include="..\Common\RttiDescriptorContainer.ixx" />
+    <ClCompile Include="..\Common\InputFile.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Luau\Common.h" />
